@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 class CodeController extends Controller
 {
-    public function generate(Request $request){
-        $request->validate(['link' => ['required', 'string']]);
-        return view('qrcode')->with('link', $request->link);
+    public function index(){
+        return view('index');
     }
 
     public function api_generate(Request $request){
