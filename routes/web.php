@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CodeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,19 +22,14 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/', function() {
-    return view('index');
+    $code = \QrCode::generate('instagram');
+    return view('index')->with('code', $code);
 });
 
 // GENERATE
-Route::get('qrcode', function () {
-    \QrCode::size(500)
-              ->format('png')
-              ->generate('https://www.instagram.com/maice_online/', public_path('images/qrcode.png'));
-    
-    return view('welcome');
+Route::get('qrcode/{link}', [CodeController::class, 'generate'])->name('generate');
 
-});
-
+Route::get('api/generate', [CodeController::class, 'api_generate'])->name('api.generate');
 
 Route::get('/pro', function(){
     return phpinfo();
